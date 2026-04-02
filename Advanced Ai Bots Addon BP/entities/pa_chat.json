@@ -1,0 +1,1303 @@
+{
+  "format_version": "1.10.0",
+  "minecraft:entity": {
+    "description": {
+      "identifier": "pa:chat",
+      "is_spawnable": false,
+      "is_summonable": true,
+      "is_experimental": false
+    },
+    "component_groups": {
+      "become_zombie": {
+        "minecraft:transformation": {
+          "into": "minecraft:zombie_villager"
+        }
+      },
+      "baby": {
+        "minecraft:is_baby": {},
+        "minecraft:scale": {
+          "value": 0.5
+        },
+        "minecraft:ageable": {
+          "duration": 1200,
+          "grow_up": {
+            "event": "minecraft:ageable_grow_up",
+            "target": "self"
+          }
+        },
+        "minecraft:behavior.take_flower": {
+          "priority": 7
+        },
+        "minecraft:behavior.play": {
+          "priority": 8,
+          "speed_multiplier": 0.32
+        }
+      },
+      "adult": {
+        "minecraft:behavior.make_love": {
+          "priority": 6
+        },
+        "minecraft:behavior.receive_love": {
+          "priority": 7
+        }
+      }
+    },
+    "components": {
+      "minecraft:type_family": {
+        "family": [
+          "Etc"
+        ]
+      },
+      "minecraft:health": {
+        "value": 0,
+        "max": 0
+      },
+      "minecraft:collision_box": {
+        "height": 1.8,
+        "width": 0.6
+      },
+      "minecraft:movement": {
+        "value": 0.5
+      },
+      "minecraft:navigation.walk": {
+        "is_amphibious": true,
+        "can_path_over_water": true,
+        "can_pass_doors": true,
+        "can_open_doors": true,
+        "can_walk": true,
+        "avoid_water": true
+      },
+      "minecraft:annotation.open_door": {},
+      "minecraft:movement.basic": {},
+      "minecraft:jump.static": {},
+      "minecraft:can_climb": {},
+      "minecraft:damage_sensor": [
+        {
+          "on_damage": {
+            "filters": {
+              "test": "is_family",
+              "subject": "other",
+              "value": "lightning"
+            },
+            "event": "become_witch"
+          },
+          "deals_damage": false
+        },
+        {
+          "on_damage": {
+            "filters": {
+              "any_of": [
+                {
+                  "test": "is_family",
+                  "subject": "other",
+                  "value": "zombie"
+                },
+                {
+                  "test": "is_family",
+                  "subject": "other",
+                  "value": "husk"
+                }
+              ],
+              "all_of": [
+                {
+                  "test": "has_damage",
+                  "value": "fatal"
+                }
+              ]
+            },
+            "event": "become_zombie"
+          }
+        }
+      ],
+      "minecraft:behavior.move_indoors": {
+        "priority": 4,
+        "speed_multiplier": 0.8
+      },
+      "minecraft:behavior.restrict_open_door": {
+        "priority": 5
+      },
+      "minecraft:break_blocks": {
+	     "breakable_blocks": [
+ 			"snow_layer"
+  		]
+      },
+      "minecraft:behavior.move_towards_restriction": {
+        "priority": 7,
+        "speed_multiplier": 0.6
+      },
+      "minecraft:behavior.share_items": {
+        "priority": 8,
+        "max_dist": 3,
+        "goal_radius": 2,
+        "speed_multiplier": 0.5,
+        "entity_types": [
+          {
+            "filters": {
+              "test": "is_family",
+              "subject": "other",
+              "value": "villager"
+            }
+          }
+        ]
+      },
+      "minecraft:behavior.random_stroll": {
+        "priority": 11,
+        "speed_multiplier": 0.6
+      },
+      "minecraft:behavior.look_at_player": {
+        "priority": 12,
+        "look_distance": 8,
+        "probability": 0.02
+      },
+      "minecraft:physics": {},
+      "minecraft:experience_reward": {
+        "on_death": "query.last_hit_by_player ? 0 : 0"
+      },
+      "minecraft:underwater_movement": {
+        "value": 0.02
+      },
+      "minecraft:scale": {
+        "value": 1
+      },
+      "minecraft:on_death": {
+        "event": "on:death",
+        "target": "self"
+      },
+      "minecraft:equip_item": {},
+      "minecraft:trail": {
+        "block_type": "minecraft:torch",
+        "spawn_offset": [
+          0,
+          0,
+          0
+        ]
+      }
+    },
+    "events": {
+      "minecraft:entity_spawned": {
+        "sequence": [
+          {
+            "filters": {
+              "test": "has_component",
+              "operator": "!=",
+              "value": "minecraft:variant"
+            },
+            "randomize": [
+              {
+                "weight": 5,
+                "add": {
+                  "component_groups": [
+                    "baby"
+                  ]
+                }
+              },
+              {
+                "weight": 95,
+                "add": {
+                  "component_groups": [
+                    "adult"
+                  ]
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "minecraft:entity_transformed": {
+        "sequence": [
+          {
+            "filters": {
+              "test": "has_component",
+              "subject": "other",
+              "value": "minecraft:is_baby"
+            },
+            "add": {
+              "component_groups": [
+                "baby"
+              ]
+            }
+          },
+          {
+            "filters": {
+              "test": "has_component",
+              "subject": "other",
+              "operator": "!=",
+              "value": "minecraft:is_baby"
+            },
+            "add": {
+              "component_groups": [
+                "adult"
+              ]
+            }
+          }
+        ]
+      },
+      "minecraft:entity_born": {
+        "sequence": [
+          {
+            "add": {
+              "component_groups": [
+                "baby"
+              ]
+            }
+          }
+        ]
+      },
+      "minecraft:ageable_grow_up": {
+        "sequence": [
+          {
+            "remove": {
+              "component_groups": [
+                "baby"
+              ]
+            },
+            "add": {
+              "component_groups": [
+                "adult"
+              ]
+            }
+          }
+        ]
+      },
+      "on:death": {
+        "randomize": [
+          {
+            "queue_command": {
+              "command": [
+                "function chat"
+              ]
+            },
+            "weight": 1
+          },
+          {
+            "queue_command": {
+              "command": [
+                "function chat1"
+              ]
+            },
+            "weight": 1
+          },
+          {
+            "queue_command": {
+              "command": [
+                "function chat2"
+              ]
+            },
+            "weight": 1
+          },
+          {
+            "queue_command": {
+              "command": [
+                "function chat3"
+              ]
+            },
+            "weight": 1
+          },
+          {
+            "queue_command": {
+              "command": [
+                "function chat4"
+              ]
+            },
+            "weight": 1
+          },
+          {
+            "queue_command": {
+              "command": [
+                "function chat5"
+              ]
+            },
+            "weight": 1
+          },
+          {
+            "queue_command": {
+              "command": [
+                "function chat6"
+              ]
+            },
+            "weight": 1
+          },
+          {
+            "queue_command": {
+              "command": [
+                "function chat7"
+              ]
+            },
+            "weight": 1
+          },
+          {
+            "queue_command": {
+              "command": [
+                "function chat8"
+              ]
+            },
+            "weight": 1
+          },
+          {
+            "queue_command": {
+              "command": [
+                "function chat9"
+              ]
+            },
+            "weight": 1
+          },
+          {
+            "queue_command": {
+              "command": [
+                "function chat10"
+              ]
+            },
+            "weight": 1
+          },
+          {
+            "queue_command": {
+              "command": [
+                "function chat11"
+              ]
+            },
+            "weight": 1
+          },
+          {
+            "queue_command": {
+              "command": [
+                "function chat12"
+              ]
+            },
+            "weight": 1
+          },
+          {
+            "queue_command": {
+              "command": [
+                "function chat13"
+              ]
+            },
+            "weight": 1
+          },
+          {
+            "queue_command": {
+              "command": [
+                "function chat14"
+              ]
+            },
+            "weight": 1
+          },
+          {
+            "queue_command": {
+              "command": [
+                "function chat15"
+              ]
+            },
+            "weight": 1
+          },
+          {
+            "queue_command": {
+              "command": [
+                "function chat16"
+              ]
+            },
+            "weight": 1
+          },
+          {
+            "queue_command": {
+              "command": [
+                "function chat17"
+              ]
+            },
+            "weight": 1
+          },
+          {
+            "queue_command": {
+              "command": [
+                "function chat18"
+              ]
+            },
+            "weight": 1
+          },
+          {
+            "queue_command": {
+              "command": [
+                "function chat19"
+              ]
+            },
+            "weight": 1
+          },
+          {
+            "queue_command": {
+              "command": [
+                "function chat20"
+              ]
+            },
+            "weight": 1
+          },
+          {
+            "queue_command": {
+              "command": [
+                "function chat21"
+              ]
+            },
+            "weight": 1
+          },
+          {
+            "queue_command": {
+              "command": [
+                "function chat22"
+              ]
+            },
+            "weight": 1
+          },
+          {
+            "queue_command": {
+              "command": [
+                "function chat23"
+              ]
+            },
+            "weight": 1
+          },
+          {
+            "queue_command": {
+              "command": [
+                "function chat24"
+              ]
+            },
+            "weight": 1
+          },
+          {
+            "queue_command": {
+              "command": [
+                "function chat25"
+              ]
+            },
+            "weight": 1
+          },
+          {
+            "queue_command": {
+              "command": [
+                "function chat26"
+              ]
+            },
+            "weight": 1
+          },
+          {
+            "queue_command": {
+              "command": [
+                "function chat27"
+              ]
+            },
+            "weight": 1
+          },
+          {
+            "queue_command": {
+              "command": [
+                "function chat28"
+              ]
+            },
+            "weight": 1
+          },
+          {
+            "queue_command": {
+              "command": [
+                "function chat29"
+              ]
+            },
+            "weight": 1
+          },
+          {
+            "queue_command": {
+              "command": [
+                "function chat30"
+              ]
+            },
+            "weight": 1
+          },
+          {
+            "queue_command": {
+              "command": [
+                "function chat31"
+              ]
+            },
+            "weight": 1
+          },
+          {
+            "queue_command": {
+              "command": [
+                "function chat32"
+              ]
+            },
+            "weight": 1
+          },
+          {
+            "queue_command": {
+              "command": [
+                "function chat33"
+              ]
+            },
+            "weight": 1
+          },
+          {
+            "queue_command": {
+              "command": [
+                "function chat34"
+              ]
+            },
+            "weight": 1
+          },
+          {
+            "queue_command": {
+              "command": [
+                "function chat35"
+              ]
+            },
+            "weight": 1
+          },
+          {
+            "queue_command": {
+              "command": [
+                "function chat36"
+              ]
+            },
+            "weight": 1
+          },
+          {
+            "queue_command": {
+              "command": [
+                "function chat37"
+              ]
+            },
+            "weight": 1
+          },
+          {
+            "queue_command": {
+              "command": [
+                "function chat38"
+              ]
+            },
+            "weight": 1
+          },
+          {
+            "queue_command": {
+              "command": [
+                "function chat39"
+              ]
+            },
+            "weight": 1
+          },
+          {
+            "queue_command": {
+              "command": [
+                "function chat40"
+              ]
+            },
+            "weight": 1
+          },
+          {
+            "queue_command": {
+              "command": [
+                "function chat41"
+              ]
+            },
+            "weight": 1
+          },
+          {
+            "queue_command": {
+              "command": [
+                "function chat42"
+              ]
+            },
+            "weight": 1
+          },
+          {
+            "queue_command": {
+              "command": [
+                "function chat43"
+              ]
+            },
+            "weight": 1
+          },
+          {
+            "queue_command": {
+              "command": [
+                "function chat44"
+              ]
+            },
+            "weight": 1
+          },
+          {
+            "queue_command": {
+              "command": [
+                "function chat45"
+              ]
+            },
+            "weight": 1
+          },
+          {
+            "queue_command": {
+              "command": [
+                "function chat46"
+              ]
+            },
+            "weight": 1
+          },
+          {
+            "queue_command": {
+              "command": [
+                "function chat47"
+              ]
+            },
+            "weight": 1
+          },
+          {
+            "queue_command": {
+              "command": [
+                "function chat48"
+              ]
+            },
+            "weight": 1
+          },
+          {
+            "queue_command": {
+              "command": [
+                "function chat49"
+              ]
+            },
+            "weight": 1
+          },
+          {
+            "queue_command": {
+              "command": [
+                "function chat50"
+              ]
+            },
+            "weight": 1
+          },
+          {
+            "queue_command": {
+              "command": [
+                "function chat51"
+              ]
+            },
+            "weight": 1
+          },
+          {
+            "queue_command": {
+              "command": [
+                "function chat52"
+              ]
+            },
+            "weight": 1
+          },
+          {
+            "queue_command": {
+              "command": [
+                "function chat53"
+              ]
+            },
+            "weight": 1
+          },
+          {
+            "queue_command": {
+              "command": [
+                "function chat54"
+              ]
+            },
+            "weight": 1
+          },
+          {
+            "queue_command": {
+              "command": [
+                "function chat55"
+              ]
+            },
+            "weight": 1
+          },
+          {
+            "queue_command": {
+              "command": [
+                "function chat56"
+              ]
+            },
+            "weight": 1
+          },
+          {
+            "queue_command": {
+              "command": [
+                "function chat57"
+              ]
+            },
+            "weight": 1
+          },
+          {
+            "queue_command": {
+              "command": [
+                "function chat58"
+              ]
+            },
+            "weight": 1
+          },
+          {
+            "queue_command": {
+              "command": [
+                "function chat59"
+              ]
+            },
+            "weight": 1
+          },
+          {
+            "queue_command": {
+              "command": [
+                "function chat60"
+              ]
+            },
+            "weight": 1
+          },
+          {
+            "queue_command": {
+              "command": [
+                "function chat61"
+              ]
+            },
+            "weight": 1
+          },
+          {
+            "queue_command": {
+              "command": [
+                "function chat62"
+              ]
+            },
+            "weight": 1
+          },
+          {
+            "queue_command": {
+              "command": [
+                "function chat63"
+              ]
+            },
+            "weight": 1
+          },
+          {
+            "queue_command": {
+              "command": [
+                "function chat64"
+              ]
+            },
+            "weight": 1
+          },
+          {
+            "queue_command": {
+              "command": [
+                "function chat65"
+              ]
+            },
+            "weight": 1
+          },
+          {
+            "queue_command": {
+              "command": [
+                "function chat66"
+              ]
+            },
+            "weight": 1
+          },
+          {
+            "queue_command": {
+              "command": [
+                "function chat67"
+              ]
+            },
+            "weight": 1
+          },
+          {
+            "queue_command": {
+              "command": [
+                "function chat68"
+              ]
+            },
+            "weight": 1
+          },
+          {
+            "queue_command": {
+              "command": [
+                "function chat70"
+              ]
+            },
+            "weight": 1
+          },
+          {
+            "queue_command": {
+              "command": [
+                "function chat69"
+              ]
+            },
+            "weight": 1
+          },
+          {
+            "queue_command": {
+              "command": [
+                "function chat71"
+              ]
+            },
+            "weight": 1
+          },
+          {
+            "queue_command": {
+              "command": [
+                "function chat72"
+              ]
+            },
+            "weight": 1
+          },
+          {
+            "queue_command": {
+              "command": [
+                "function chat73"
+              ]
+            },
+            "weight": 1
+          },
+          {
+            "queue_command": {
+              "command": [
+                "function chat74"
+              ]
+            },
+            "weight": 1
+          },
+          {
+            "queue_command": {
+              "command": [
+                "function chat75"
+              ]
+            },
+            "weight": 1
+          },
+          {
+            "queue_command": {
+              "command": [
+                "function chat77"
+              ]
+            },
+            "weight": 1
+          },
+          {
+            "queue_command": {
+              "command": [
+                "function chat76"
+              ]
+            },
+            "weight": 1
+          },
+          {
+            "queue_command": {
+              "command": [
+                "function chat78"
+              ]
+            },
+            "weight": 1
+          },
+          {
+            "queue_command": {
+              "command": [
+                "function chat79"
+              ]
+            },
+            "weight": 1
+          },
+          {
+            "queue_command": {
+              "command": [
+                "function chat81"
+              ]
+            },
+            "weight": 1
+          },
+          {
+            "queue_command": {
+              "command": [
+                "function chat80"
+              ]
+            },
+            "weight": 1
+          },
+          {
+            "queue_command": {
+              "command": [
+                "function chat82"
+              ]
+            },
+            "weight": 1
+          },
+          {
+            "queue_command": {
+              "command": [
+                "function chat83"
+              ]
+            },
+            "weight": 1
+          },
+          {
+            "queue_command": {
+              "command": [
+                "function chat85"
+              ]
+            },
+            "weight": 1
+          },
+          {
+            "queue_command": {
+              "command": [
+                "function chat84"
+              ]
+            },
+            "weight": 1
+          },
+          {
+            "queue_command": {
+              "command": [
+                "function chat86"
+              ]
+            },
+            "weight": 1
+          },
+          {
+            "queue_command": {
+              "command": [
+                "function chat87"
+              ]
+            },
+            "weight": 1
+          },
+          {
+            "queue_command": {
+              "command": [
+                "function chat88"
+              ]
+            },
+            "weight": 1
+          },
+          {
+            "queue_command": {
+              "command": [
+                "function chat89"
+              ]
+            },
+            "weight": 1
+          },
+          {
+            "queue_command": {
+              "command": [
+                "function chat90"
+              ]
+            },
+            "weight": 1
+          },
+          {
+            "queue_command": {
+              "command": [
+                "function chat91"
+              ]
+            },
+            "weight": 1
+          },
+          {
+            "queue_command": {
+              "command": [
+                "function chat92"
+              ]
+            },
+            "weight": 1
+          },
+          {
+            "queue_command": {
+              "command": [
+                "function chat93"
+              ]
+            },
+            "weight": 1
+          },
+          {
+            "queue_command": {
+              "command": [
+                "function chat94"
+              ]
+            },
+            "weight": 1
+          },
+          {
+            "queue_command": {
+              "command": [
+                "function chat95"
+              ]
+            },
+            "weight": 1
+          },
+          {
+            "queue_command": {
+              "command": [
+                "function chat96"
+              ]
+            },
+            "weight": 1
+          },
+          {
+            "queue_command": {
+              "command": [
+                "function chat97"
+              ]
+            },
+            "weight": 1
+          },
+          {
+            "queue_command": {
+              "command": [
+                "function chat98"
+              ]
+            },
+            "weight": 1
+          },
+          {
+            "queue_command": {
+              "command": [
+                "function chat99"
+              ]
+            },
+            "weight": 1
+          },
+          {
+            "queue_command": {
+              "command": [
+                "function chat100"
+              ]
+            },
+            "weight": 1
+          },
+          {
+            "queue_command": {
+              "command": [
+                "function chat101"
+              ]
+            },
+            "weight": 1
+          },
+          {
+            "queue_command": {
+              "command": [
+                "function chat102"
+              ]
+            },
+            "weight": 1
+          },
+          {
+            "queue_command": {
+              "command": [
+                "function chat104"
+              ]
+            },
+            "weight": 1
+          },
+          {
+            "queue_command": {
+              "command": [
+                "function chat103"
+              ]
+            },
+            "weight": 1
+          },
+          {
+            "queue_command": {
+              "command": [
+                "function chat106"
+              ]
+            },
+            "weight": 1
+          },
+          {
+            "queue_command": {
+              "command": [
+                "function chat105"
+              ]
+            },
+            "weight": 1
+          },
+          {
+            "queue_command": {
+              "command": [
+                "function chat107"
+              ]
+            },
+            "weight": 1
+          },
+          {
+            "queue_command": {
+              "command": [
+                "function chat108"
+              ]
+            },
+            "weight": 1
+          },
+          {
+            "queue_command": {
+              "command": [
+                "function chat109"
+              ]
+            },
+            "weight": 1
+          },
+          {
+            "queue_command": {
+              "command": [
+                "function chat110"
+              ]
+            },
+            "weight": 1
+          },
+          {
+            "queue_command": {
+              "command": [
+                "function chat111"
+              ]
+            },
+            "weight": 1
+          },
+          {
+            "queue_command": {
+              "command": [
+                "function chat112"
+              ]
+            },
+            "weight": 1
+          },
+          {
+            "queue_command": {
+              "command": [
+                "function chat113"
+              ]
+            },
+            "weight": 1
+          },
+          {
+            "queue_command": {
+              "command": [
+                "function chat114"
+              ]
+            },
+            "weight": 1
+          },
+          {
+            "queue_command": {
+              "command": [
+                "function chat115"
+              ]
+            },
+            "weight": 1
+          },
+          {
+            "queue_command": {
+              "command": [
+                "function chat116"
+              ]
+            },
+            "weight": 1
+          },
+          {
+            "queue_command": {
+              "command": [
+                "function chat117"
+              ]
+            },
+            "weight": 1
+          },
+          {
+            "queue_command": {
+              "command": [
+                "function chat118"
+              ]
+            },
+            "weight": 1
+          },
+          {
+            "queue_command": {
+              "command": [
+                "function chat119"
+              ]
+            },
+            "weight": 1
+          },
+          {
+            "queue_command": {
+              "command": [
+                "function chat120"
+              ]
+            },
+            "weight": 1
+          },
+          {
+            "queue_command": {
+              "command": [
+                "function chat121"
+              ]
+            },
+            "weight": 1
+          },
+          {
+            "queue_command": {
+              "command": [
+                "function chat122"
+              ]
+            },
+            "weight": 1
+          },
+          {
+            "queue_command": {
+              "command": [
+                "function chat123"
+              ]
+            },
+            "weight": 1
+          },
+          {
+            "queue_command": {
+              "command": [
+                "function chat124"
+              ]
+            },
+            "weight": 1
+          }
+        ]
+      },
+      "on:hurt": {
+        "queue_command": {
+          "command": []
+        }
+      },
+      "on:hurt_by_player": {
+        "queue_command": {
+          "command": []
+        }
+      },
+      "on:ignite": {
+        "queue_command": {
+          "command": []
+        }
+      },
+      "on:target_acquired": {
+        "queue_command": {
+          "command": []
+        }
+      },
+      "on:target_escape": {
+        "queue_command": {
+          "command": []
+        }
+      },
+      "on:wake_with_owner": {
+        "queue_command": {
+          "command": []
+        }
+      },
+      "on:tick_action": {
+        "queue_command": {
+          "command": []
+        }
+      }
+    }
+  }
+}

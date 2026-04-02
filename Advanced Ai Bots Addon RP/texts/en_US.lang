@@ -1,0 +1,9 @@
+item.spawn_egg.entity.pa:summonplayer.name=Summon player
+entity.pa:summonplayer.name=Summon player
+item.spawn_egg.entity.pa:player.name=Spawn Bot
+entity.pa:player.name=Bot
+item.spawn_egg.entity.pa:chat.name=Chat
+entity.pa:chat.name=Chat
+item.spawn_egg.entity.pa:player2.name=Spawn Bot
+entity.pa:player2.name=Bot
+action.interact.pa_order=Give Order

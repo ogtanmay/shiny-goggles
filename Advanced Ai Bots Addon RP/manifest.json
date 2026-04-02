@@ -1,0 +1,40 @@
+{
+  "format_version": 2,
+  "header": {
+    "description": "Created by Standardcuz Do Not Combine With The Load Chunks Version",
+    "name": "Advanced Ai Bots RP (No Load Chunks)",
+    "uuid": "6d0aad30-1e64-4212-96d0-7204def54852",
+    "version": [
+      0,
+      3,
+      0
+    ],
+    "min_engine_version": [
+      1,
+      21,
+      100
+    ]
+  },
+  "modules": [
+    {
+      "description": "Created by Standardcuz Do Not Combine With The Load Chunks Version",
+      "type": "resources",
+      "uuid": "de755763-d76c-47bf-a6c5-59e775261e35",
+      "version": [
+        0,
+        3,
+        0
+      ]
+    }
+  ],
+  "dependencies": [
+    {
+      "uuid": "378afcca-4ac5-4276-ad3f-f4e6fb42b4b0",
+      "version": [
+        0,
+        3,
+        0
+      ]
+    }
+  ]
+}

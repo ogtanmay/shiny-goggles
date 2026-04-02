@@ -1,0 +1,27 @@
+{
+	"format_version": "1.10.0",
+	"animation_controllers": {
+      "controller.animation.player.sleep": {
+			"initial_state": "default",
+			"states": {
+				"default": {
+					"transitions": [
+						{
+							"sleep": "q.is_sleeping"
+						}
+					]
+				},
+				"sleep": {
+					"animations": [
+						"nap"
+					],
+					"transitions": [
+						{
+							"default": "!q.is_sleeping"
+						}
+					]
+				}
+			}
+		}
+	}
+}
