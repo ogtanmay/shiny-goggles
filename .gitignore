@@ -1,0 +1,14 @@
+# Compiled addon binaries — the source packs are the canonical files
+*.mcaddon
+*.mcpack
+*.mcworld
+
+# macOS metadata
+.DS_Store
+**/.DS_Store
+__MACOSX/
+
+# Editor / OS
+Thumbs.db
+*.swp
+*.swo

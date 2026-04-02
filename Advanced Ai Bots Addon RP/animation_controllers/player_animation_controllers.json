@@ -1,0 +1,67 @@
+{
+  "format_version" : "1.10.0",
+  "animation_controllers" : {
+    "controller.animation.admire": {
+   	"initial_state" : "default",
+      "states": {
+        "default": {
+          "transitions": [
+            {
+              "admiring": "query.is_admiring"
+            }
+          ]
+        },
+        "admiring": {
+          "animations": [
+            "admire"
+          ],
+          "transitions": [
+            {
+              "default": "!query.is_admiring"
+            }
+          ]
+        }
+      }
+    },
+    "controller.animation.humanoid.bow_and_arrow": {
+      "initial_state": "default",
+      "states": {
+        "default": {
+          "transitions": [
+            {
+              "bow_and_arrow": "query.has_target && query.is_item_name_any('slot.weapon.mainhand', 'minecraft:bow')"
+            }
+          ]
+        },
+        "bow_and_arrow": {
+          "animations": [ "bow_and_arrow" ], 
+          "transitions": [
+            {
+              "default": "!query.has_target || !query.is_item_name_any('slot.weapon.mainhand', 'minecraft:bow')"
+            }
+          ]
+        }
+	   }
+    },
+    "controller.animation.humanoid.swimming" : {
+		"initial_state" : "default",
+		"states" : {
+		  "default" : {
+			 "transitions" : [
+			   {
+				  "swimming" : "query.is_swimming"
+			   }
+		    ]
+	  	},
+		  "swimming" : {
+			 "animations" : [ "swimming" ],
+			 "transitions" : [
+				{
+				  "default" : "!query.is_swimming"
+				}
+			 ]
+		  }
+		} 
+    }
+  }
+}

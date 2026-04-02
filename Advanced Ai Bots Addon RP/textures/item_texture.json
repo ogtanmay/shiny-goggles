@@ -1,0 +1,18 @@
+{
+  "resource_pack_name": "vanilla",
+  "texture_name": "atlas.items",
+  "texture_data": {
+    "pa:summonplayer_spawn_egg": {
+      "textures": "textures/items/pamobile/pa_summonplayer_spawn_egg"
+    },
+    "pa:player_spawn_egg": {
+      "textures": "textures/items/pamobile/pa_player_spawn_egg"
+    },
+    "pa:chat_spawn_egg": {
+      "textures": "textures/items/pamobile/pa_chat_spawn_egg"
+    },
+    "pa:player2_spawn_egg": {
+      "textures": "textures/items/pamobile/pa_player2_spawn_egg"
+    }
+  }
+}

@@ -1,0 +1,127 @@
+{
+  "format_version": "1.8.0",
+  "minecraft:client_entity": {
+    "description": {
+      "identifier": "pa:player",
+      "materials": {
+        "default": "skeleton"
+      },
+      "textures": {
+        "steve": "textures/entity/male_players/steve",
+        "skin1": "textures/entity/male_players/skin1",
+        "skin2": "textures/entity/male_players/skin2",
+        "skin3": "textures/entity/male_players/skin3",
+        "skin4": "textures/entity/male_players/skin4",
+        "skin5": "textures/entity/male_players/skin5",
+        "skin6": "textures/entity/male_players/skin6",
+        "skin7": "textures/entity/male_players/skin7",
+        "skin8": "textures/entity/male_players/skin8",
+        "skin9": "textures/entity/male_players/skin9",
+        "skin10": "textures/entity/male_players/skin10",
+        "skin11": "textures/entity/male_players/skin11",
+        "skin12": "textures/entity/male_players/skin12",
+        "skin13": "textures/entity/male_players/skin13",
+        "skin14": "textures/entity/male_players/skin14",
+        "skin15": "textures/entity/male_players/skin15",
+        "skin16": "textures/entity/male_players/skin16",
+        "skin17": "textures/entity/male_players/skin17",
+        "skin18": "textures/entity/male_players/skin18",
+        "skin19": "textures/entity/male_players/skin19",
+        "skin20": "textures/entity/male_players/skin20",
+        "skin21": "textures/entity/male_players/skin21",
+        "skin22": "textures/entity/male_players/skin22",
+        "skin23": "textures/entity/male_players/skin23",
+        "skin24": "textures/entity/male_players/skin24",
+        "skin25": "textures/entity/male_players/skin25",
+        "skin26": "textures/entity/male_players/skin26",
+        "skin27": "textures/entity/male_players/skin27",
+        "skin28": "textures/entity/male_players/skin28",
+        "skin29": "textures/entity/male_players/skin29",
+        "skin30": "textures/entity/male_players/skin30"
+      },
+      "geometry": {
+        "default": "geometry.player.custom"
+      },
+      "scripts": {
+        "pre_animation": [
+          "variable.tcos0 = (Math.cos(query.modified_distance_moved * 38.17) * query.modified_move_speed / variable.gliding_speed_value) * 57.3;"
+        ]
+      },
+      "animations": {
+        "look_at_target_default": "animation.pa_player.look_at_target.default",
+        "look_at_target_gliding": "animation.pa_player.look_at_target.gliding",
+        "look_at_target_swimming": "animation.pa_player.look_at_target.swimming",
+        "move": "animation.pa_player.move",
+        "riding.arms": "animation.pa_player.riding.arms",
+        "riding.legs": "animation.pa_player.riding.legs",
+        "holding": "animation.pa_player.holding",
+        "brandish_spear": "animation.pa_player.brandish_spear",
+        "charging": "animation.pa_player.charging",
+        "attack.rotations": "animation.pa_player.attack.rotations",
+        "sneaking": "animation.pa_player.sneaking",
+        "bob": "animation.pa_player.bob",
+        "damage_nearby_mobs": "animation.pa_player.damage_nearby_mobs",
+        "bow_and_arrow": "animation.humanoid.bow_and_arrow",
+        "swimming": "animation.humanoid.swimming",
+        "use_item_progress": "animation.pa_player.use_item_progress",
+        "skeleton_attack": "animation.pa_player.attack",
+        "nap": "animation.player.nap"
+      },
+      "animation_controllers": [
+        {
+          "look_at_target": "controller.animation.humanoid.look_at_target"
+        },
+        {
+          "move": "controller.animation.humanoid.move"
+        },
+        {
+          "riding": "controller.animation.humanoid.riding"
+        },
+        {
+          "holding": "controller.animation.humanoid.holding"
+        },
+        {
+          "brandish_spear": "controller.animation.humanoid.brandish_spear"
+        },
+        {
+          "charging": "controller.animation.humanoid.charging"
+        },
+        {
+          "attack": "controller.animation.humanoid.attack"
+        },
+        {
+          "sneaking": "controller.animation.humanoid.sneaking"
+        },
+        {
+          "bob": "controller.animation.humanoid.bob"
+        },
+        {
+          "damage_nearby_mobs": "controller.animation.humanoid.damage_nearby_mobs"
+        },
+        {
+          "bow_and_arrow": "controller.animation.humanoid.bow_and_arrow"
+        },
+        {
+          "swimming": "controller.animation.humanoid.swimming"
+        },
+        {
+          "use_item_progress": "controller.animation.humanoid.use_item_progress"
+        },
+        {
+          "skeleton_attack": "controller.animation.skeleton.attack"
+        },
+        {
+          "sleep": "controller.animation.player.sleep"
+        }
+      ],
+      "spawn_egg": {
+        "texture": "pa:player_spawn_egg",
+        "texture_index": 0
+      },
+      "render_controllers": [
+        "controller.render.mplayer"
+      ],
+      "enable_attachables": true
+    }
+  }
+}

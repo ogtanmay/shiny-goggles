@@ -1,0 +1,68 @@
+{
+  "format_version": 2,
+  "header": {
+    "description": "Created by Standardcuz Do Not Combine With The Load Chunks Version",
+    "name": "Advanced Ai Bots BP (No Load Chunks)",
+    "uuid": "378afcca-4ac5-4276-ad3f-f4e6fb42b4b0",
+    "version": [
+      0,
+      3, 
+      0
+    ],
+    "min_engine_version": [
+      1,
+      21,
+      100
+    ]
+  },
+  "modules": [
+    {
+      "description": "Created by Standardcuz Do Not Combine With The Load Chunks Version",
+      "type": "data",
+      "uuid": "d885367c-8558-40cf-86c2-870d8de293c5",
+      "version": [
+        0,
+        3,
+        0
+      ]
+    },
+    {
+      "description": "NPC Order System Script",
+      "type": "script",
+      "language": "javascript",
+      "uuid": "f1e2d3c4-b5a6-7890-fedc-ba9876543210",
+      "version": [
+        0,
+        3,
+        0
+      ],
+      "entry": "scripts/main.js"
+    }
+  ],
+  "dependencies": [
+    {
+      "uuid": "6d0aad30-1e64-4212-96d0-7204def54852",
+      "version": [
+        0,
+        3,
+        0
+      ] 
+    },
+    {
+      "version": "1.14.0",
+      "module_name": "@minecraft/server"
+    },
+    {
+      "version": "1.3.0",
+      "module_name": "@minecraft/server-ui"
+    },
+    {
+      "version": "1.2.0",
+      "module_name": "@minecraft/common"
+    },
+    {
+      "version": "1.0.0-beta",
+      "module_name": "@minecraft/server-net"
+    }
+  ]
+}

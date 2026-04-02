@@ -1,0 +1,1 @@
+tellraw @p {"rawtext":[{"text":"<Player> I was born for this"}]}
