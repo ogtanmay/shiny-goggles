@@ -163,15 +163,7 @@
         "event": "on:death",
         "target": "self"
       },
-      "minecraft:equip_item": {},
-      "minecraft:trail": {
-        "block_type": "minecraft:torch",
-        "spawn_offset": [
-          0,
-          0,
-          0
-        ]
-      }
+      "minecraft:equip_item": {}
     },
     "events": {
       "minecraft:entity_spawned": {

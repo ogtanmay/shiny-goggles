@@ -44,14 +44,6 @@ try {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Dynamic-property registration (world-level)
-// ─────────────────────────────────────────────────────────────────────────────
-
-mc.world.beforeEvents.worldInitialize.subscribe(({ propertyRegistry }) => {
-  propertyRegistry.registerWorldDynamicProperty("groq_api_key", String);
-});
-
-// ─────────────────────────────────────────────────────────────────────────────
 // Constants
 // ─────────────────────────────────────────────────────────────────────────────
 
@@ -788,7 +780,10 @@ function botSay(bot, text) {
   const name  = getTag(bot, "pa_basename") ?? bot.nameTag ?? "Bot";
   const emo   = getEmotion(bot).emotion;
   const emoji = EMOTION_EMOJI[emo] ?? "🤖";
-  try { bot.dimension.runCommand(`say §e[${emoji} ${name}]§r ${text}`); } catch (_) {}
+  try {
+    const msg = JSON.stringify({ rawtext: [{ text: `§e[${emoji} ${name}]§r ${text}` }] });
+    bot.dimension.runCommand(`tellraw @a ${msg}`);
+  } catch (_) {}
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -905,11 +900,11 @@ async function renameForm(player, bot) {
 
 mc.world.afterEvents.playerInteractWithEntity.subscribe(({ player, target }) => {
   if (!BOT_TYPES.includes(target.typeId)) return;
-  mc.system.run(() => {
+  mc.system.runTimeout(() => {
     showOrderMenu(player, target).catch(err => {
       player.sendMessage(`§cBot menu error: ${err}`);
     });
-  });
+  }, 2);
 });
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -1019,6 +1014,21 @@ mc.world.beforeEvents.chatSend.subscribe(event => {
     return;
   }
 
+  // .bot spawn [name] — spawn a bot at the player's location
+  if (cmd === "spawn") {
+    const loc = player.location;
+    const x = Math.floor(loc.x), y = Math.floor(loc.y), z = Math.floor(loc.z);
+    mc.system.run(() => {
+      try {
+        player.dimension.runCommand(`summon pa:player ${x} ${y} ${z} minecraft:entity_spawned`);
+        player.sendMessage(`§aBot spawned at §e(${x}, ${y}, ${z})§a! Right-click it to give orders.`);
+      } catch (e) {
+        player.sendMessage(`§cFailed to spawn bot: ${e}`);
+      }
+    });
+    return;
+  }
+
   if (!bot) { player.sendMessage("§cNo bot within 32 blocks!"); return; }
 
   const modeMap = {
@@ -1037,6 +1047,7 @@ mc.world.beforeEvents.chatSend.subscribe(event => {
   } else {
     player.sendMessage(
       "§eCommands:§r .bot <hunt|mine|farm|collect|build|trade|guard|follow|idle|stop>\n" +
+      "           .bot spawn     — spawn a new bot at your location\n" +
       "           .bot sethome   — register nearby chest as home\n" +
       "           .bot status    — show current mode & emotion\n" +
       "           .bot setkey <GROQ_KEY>  — enable real AI (BDS only)\n" +
@@ -1069,7 +1080,7 @@ mc.world.afterEvents.playerSpawn.subscribe(({ player, initialSpawn }) => {
     const hasKey = !!mc.world.getDynamicProperty("groq_api_key");
     player.sendMessage(
       "§6§lAdvanced Ai Bots — AI Brain Edition§r\n" +
-      "§7• Spawn a bot with the §eSpawn Player§7 egg.\n" +
+      "§7• Spawn a bot with §e.bot spawn§7 (chat command) or §e/summon pa:player§7.\n" +
       "§7• §eRight-click§7 a bot for the full order menu.\n" +
       "§7• Just §echat naturally§7 near a bot: §e\"mine\"§7, §e\"farm\"§7, §e\"build\"§7…\n" +
       "§7• Type §e\"set home\"§7 near a chest to register it as the drop-off point.\n" +
